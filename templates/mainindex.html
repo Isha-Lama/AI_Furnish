@@ -1,0 +1,280 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Home By You - AI-Powered Room Decor</title>
+<style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  header {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px 40px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  header h1 {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin: 0;
+    letter-spacing: 2px;
+  }
+
+  /* Main content container */
+  main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+  }
+
+  /* Card/form container */
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    max-width: 480px;
+    width: 100%;
+    padding: 40px 40px 50px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+  }
+
+  /* Section title */
+  .card h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+  }
+
+  /* Form labels and inputs */
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    margin-top: 18px;
+  }
+  select, input[type="number"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  select:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 8px #667eeaaa;
+  }
+
+  /* Submit button */
+  button {
+    margin-top: 35px;
+    width: 100%;
+    padding: 16px 0;
+    background: #764ba2;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #5a3680;
+  }
+
+  /* Result box */
+  #result {
+    margin-top: 30px;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    font-size: 1.15rem;
+    min-height: 48px;
+    user-select: none;
+  }
+  #result.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+  }
+  #result.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+  }
+
+  /* Footer */
+  footer {
+    background: rgba(0,0,0,0.12);
+    text-align: center;
+    padding: 18px 10px;
+    font-size: 0.9rem;
+    color: #eee;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .card {
+      padding: 30px 20px 40px;
+      margin: 0 10px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Home By You</h1>
+</header>
+
+<main>
+  <section class="card" aria-label="Furniture Category Predictor Form">
+    <h2>Predict Your Furniture Category</h2>
+    <form id="predictForm" autocomplete="off" aria-describedby="result" aria-live="polite">
+      <label for="room_type">Room Type *</label>
+      <select id="room_type" name="room_type" required aria-required="true">
+        <option value="" disabled selected>Select room</option>
+        <option>bedroom</option>
+        <option>kitchen</option>
+        <option>livingroom</option>
+        <option>office</option>
+        <option>bathroom</option>
+        <option>hallway</option>
+        <option>diningroom</option>
+        <option>classroom</option>
+      </select>
+
+      <label for="color">Color *</label>
+      <select id="color" name="color" required aria-required="true">
+        <option value="" disabled selected>Select color</option>
+        <option>white</option>
+        <option>black</option>
+        <option>red</option>
+        <option>blue</option>
+        <option>green</option>
+        <option>brown</option>
+        <option>beige</option>
+        <option>gray</option>
+      </select>
+
+      <label for="material">Material *</label>
+      <select id="material" name="material" required aria-required="true">
+        <option value="" disabled selected>Select material</option>
+        <option>wood</option>
+        <option>metal</option>
+        <option>plastic</option>
+        <option>glass</option>
+        <option>fabric</option>
+        <option>leather</option>
+        <option>bamboo</option>
+      </select>
+
+      <label for="scale_x">Scale X (optional)</label>
+      <input type="number" id="scale_x" name="scale_x" step="0.1" placeholder="e.g., 1.0" />
+
+      <label for="scale_y">Scale Y (optional)</label>
+      <input type="number" id="scale_y" name="scale_y" step="0.1" placeholder="e.g., 1.0" />
+
+      <label for="scale_z">Scale Z (optional)</label>
+      <input type="number" id="scale_z" name="scale_z" step="0.1" placeholder="e.g., 1.0" />
+
+      <label for="rotation_y">Rotation Y (optional)</label>
+      <input type="number" id="rotation_y" name="rotation_y" step="1" placeholder="e.g., 0" />
+
+      <label for="x">Position X (optional)</label>
+      <input type="number" id="x" name="x" step="0.1" placeholder="e.g., 2.5" />
+
+      <label for="y">Position Y (optional)</label>
+      <input type="number" id="y" name="y" step="0.1" placeholder="e.g., 0.0" />
+
+      <label for="z">Position Z (optional)</label>
+      <input type="number" id="z" name="z" step="0.1" placeholder="e.g., 2.5" />
+
+      <button type="submit">Predict Category</button>
+    </form>
+
+    <div id="result" role="alert" aria-live="polite"></div>
+  </section>
+</main>
+
+<footer>
+  &copy; 2025 Home By You | AI Room Decor Prediction
+</footer>
+
+<script>
+  const form = document.getElementById('predictForm');
+  const resultDiv = document.getElementById('result');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const data = {
+      room_type: form.room_type.value,
+      color: form.color.value,
+      material: form.material.value,
+    };
+
+    ['scale_x','scale_y','scale_z','rotation_y','x','y','z'].forEach(field => {
+      const val = form[field].value;
+      if(val) data[field] = parseFloat(val);
+    });
+
+    resultDiv.className = '';
+    resultDiv.textContent = "Predicting...";
+
+    try {
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const json = await response.json();
+
+      if(json.status === 'success') {
+        resultDiv.classList.add('success');
+        resultDiv.textContent = `Predicted Category: ${json.category} (Confidence: ${(json.confidence*100).toFixed(2)}%)`;
+      } else {
+        resultDiv.classList.add('error');
+        resultDiv.textContent = `Error: ${json.error}`;
+      }
+
+    } catch (err) {
+      resultDiv.classList.add('error');
+      resultDiv.textContent = 'Error connecting to API.';
+    }
+  });
+</script>
+
+</body>
+</html>
